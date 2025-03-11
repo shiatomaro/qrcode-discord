@@ -12,31 +12,39 @@ import (
 )
 
 func main() {
-
-	userID := flag.String("user", "", "Discord User ID")
-	invite := flag.String("invite", "", "Discord Invite Code")
+	userInput := flag.String("input", "", "Discord username/ID or invite code")
+	urlType := flag.String("type", "invite", "Type of URL: 'invite' or 'user'")
 	output := flag.String("o", "discord_qr.png", "Output filename")
 	size := flag.Int("size", 256, "QR Code size in pixels")
 	flag.Parse()
 
 	var input string
-	if *userID == "" && *invite == "" {
-		fmt.Print("Enter Discord User ID or Invite Code: ")
+	if *userInput == "" {
+		fmt.Print("Enter Discord username/ID or invite code: ")
 		reader := bufio.NewReader(os.Stdin)
-		input, _ := reader.ReadString('\n')
-		input = strings.TrimSpace(input)
+		line, _ := reader.ReadString('\n')
+		input = strings.TrimSpace(line)
 	} else {
-		if *userID != "" {
-			input = *userID
-		} else {
-			input = *invite
-		}
+		input = *userInput
 	}
+
 	if input == "" {
 		fmt.Println("Error: No Input Provided")
 		os.Exit(1)
 	}
-	err := qrgen.GenerateQR(input, *output, *size)
+
+	var urlTemplate string
+	switch strings.ToLower(*urlType) {
+	case "user":
+		urlTemplate = "https://discord.com/users/%s"
+	case "invite":
+		urlTemplate = "https://discord.gg/%s"
+	default:
+		fmt.Println("Invalid type. Use 'user' or 'invite'.")
+		os.Exit(1)
+	}
+
+	err := qrgen.GenerateQRWithTemplate(input, urlTemplate, *output, *size)
 	if err != nil {
 		log.Fatal(err)
 	}
