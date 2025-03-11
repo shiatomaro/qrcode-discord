@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 
-	"qrcode-discord/qrgen"
+	"github.com/shiatomaro/qrcode-discord/qrgen"
 )
 
 func main() {
@@ -36,7 +36,7 @@ func main() {
 		fmt.Println("Error: No Input Provided")
 		os.Exit(1)
 	}
-	err := qrgen.GenerateQRFromInput(input, *output, *size)
+	err := qrgen.GenerateQR(input, *output, *size)
 	if err != nil {
 		log.Fatal(err)
 	}
