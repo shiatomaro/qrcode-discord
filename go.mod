@@ -1,4 +1,4 @@
-module github.com/shiatomaro/qrcode-discord
+module qrcode-discord
 
 go 1.23.5
 

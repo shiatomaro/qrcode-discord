@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/shiatomaro/qrcode-discord/internal/qrgen"
+	"qrcode-discord/qrgen"
 )
 
 func main() {
@@ -21,7 +21,7 @@ func main() {
 
 	var input string
 	if *userID == "" && *invite == "" {
-		fmt.Print("Enter Discord User ID or Invite Code:")
+		fmt.Print("Enter Discord User ID or Invite Code: ")
 		reader := bufio.NewReader(os.Stdin)
 		input, _ := reader.ReadString('\n')
 		input = strings.TrimSpace(input)
@@ -32,7 +32,6 @@ func main() {
 			input = *invite
 		}
 	}
-
 	if input == "" {
 		fmt.Println("Error: No Input Provided")
 		os.Exit(1)
